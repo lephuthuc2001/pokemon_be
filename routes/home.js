@@ -2,6 +2,7 @@ const csv = require("csvtojson");
 const rootDir = require("./root");
 const path = require("path");
 const fs = require("fs");
+const { hostname } = require("os");
 const router = require("express").Router();
 
 const pokemonTypes = [
@@ -42,7 +43,7 @@ const init = async () => {
         types: pokemon.Type2
           ? [pokemon.Type1.toLowerCase(), pokemon.Type2.toLowerCase()]
           : [pokemon.Type1.toLowerCase()],
-        url: `http://localhost:5000/pokemon_images/${index + 1}.jpg`,
+        url: `${process.env.HOST}/pokemon_images/${index + 1}.jpg`,
       };
     }
   });
