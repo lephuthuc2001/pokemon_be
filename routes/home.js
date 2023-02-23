@@ -19,7 +19,7 @@ const pokemonTypes = [
   "dark",
   "electric",
   "fighting",
-  "flyingText",
+  "flying",
   "grass",
   "ice",
   "poison",
@@ -148,6 +148,11 @@ router.post("/", function (req, res, next) {
     name: name.toLowerCase(),
     types: types.filter((type) => type !== null),
     url,
+    description: faker.lorem.paragraph(3),
+    height: faker.address.zipCode("###") + "cm",
+    weight: faker.address.zipCode("###") + "kg",
+    category: faker.word.adjective(),
+    abilities: faker.music.songName(),
   });
 
   fs.writeFileSync(
@@ -157,6 +162,7 @@ router.post("/", function (req, res, next) {
       totalPokemons: data.data.length,
     })
   );
+  return res.status(200).send({ message: "Add successfully" });
 });
 
 router.get("/", async function (req, res, next) {
@@ -190,4 +196,103 @@ router.get("/", async function (req, res, next) {
   });
 });
 
+router.delete("/:pokemonId", function (req, res, next) {
+  let data = getDataFromDb();
+
+  data = JSON.parse(data);
+
+  const pokemonId = parseInt(req.params.pokemonId);
+
+  const pokemon = data.data.find(
+    (pokemon) => parseInt(pokemon.id) === parseInt(pokemonId)
+  );
+
+  if (!pokemon) {
+    return res.status(404).send({
+      message: "No such pokemon",
+    });
+  }
+  let result = data.data.filter(
+    (pokemon) => parseInt(pokemon.id) !== parseInt(pokemonId)
+  );
+
+  fs.writeFileSync(
+    dbPath,
+    JSON.stringify({
+      data: result,
+      totalPokemons: result.length,
+    })
+  );
+  return res.status(200).send({ message: "Delete successfully" });
+});
+
+router.put("/", function (req, res, next) {
+  let data = getDataFromDb();
+
+  data = JSON.parse(data);
+
+  const {
+    name,
+    id,
+    url,
+    types,
+    description,
+    height,
+    weight,
+    abilities,
+    category,
+  } = req.body;
+
+  if (
+    !data.data.find(
+      (pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()
+    ) &&
+    !data.data.find((pokemon) => parseInt(pokemon.id) === parseInt(id))
+  ) {
+    return res.status(401).send({ message: "Pokémon is not existing" });
+  }
+  ////"Missing required data
+  if (!name || !id || !url || !types) {
+    return res.status(401).send({ message: "Missing required value" });
+  }
+  ///Pokémon can only have one or two types
+  if (types[0]) {
+    if (!pokemonTypes.includes(types[0])) {
+      return res.status(401).send({ message: "Pokémon's type is invalid" });
+    }
+  }
+
+  if (types[1]) {
+    if (!pokemonTypes.includes(types[1])) {
+      return res.status(401).send({ message: "Pokémon's type is invalid" });
+    }
+  }
+
+  const pokemon = data.data.find(
+    (pokemon) => parseInt(pokemon.id) === parseInt(id)
+  );
+
+  const updateIndex = data.data.indexOf(pokemon);
+
+  data.data[updateIndex] = {
+    name,
+    id,
+    url,
+    types,
+    description,
+    height,
+    weight,
+    abilities,
+    category,
+  };
+
+  fs.writeFileSync(
+    dbPath,
+    JSON.stringify({
+      data: data.data,
+      totalPokemons: data.data.length,
+    })
+  );
+  return res.status(200).send({ message: "Update successfully" });
+});
 module.exports = router;

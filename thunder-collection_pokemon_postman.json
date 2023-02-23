@@ -1,0 +1,89 @@
+{
+    "info": {
+        "name": "pokemon",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "getPokemon",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "{{demo}}/pokemons/333",
+                    "path": [
+                        "pokemons",
+                        "333"
+                    ],
+                    "host": [
+                        "{{demo}}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "addPokemon",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "{{demo}}/pokemons",
+                    "path": [
+                        "pokemons"
+                    ],
+                    "host": [
+                        "{{demo}}"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\":\"leessss\",\n  \"id\":\"1232222\",\n  \"url\":\"a\",\n  \"types\":[\"grass\"]\n}"
+                }
+            }
+        },
+        {
+            "name": "updatePokemon",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "{{demo}}/pokemons",
+                    "path": [
+                        "pokemons"
+                    ],
+                    "host": [
+                        "{{demo}}"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n      \"id\": 333,\n      \"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaa\",\n      \"types\": [\n        \"normal\",\n        \"flying\"\n      ],\n      \"url\": \"https://raw.githubusercontent.com/lephuthuc2001/pokemon_be/main/public/pokemon_images/333.jpg\",\n      \"description\": \"Porro laboriosam nobis velit deserunt quisquam veniam deserunt facilis error. Officiis commodi reiciendis. Eligendi perferendis fuga architecto aspernatur cupiditate veniam aspernatur.\",\n      \"height\": \"023cm\",\n      \"weight\": \"260kg\",\n      \"category\": \"sunny\",\n      \"abilities\": \"Larosa\"\n    }"
+                }
+            }
+        },
+        {
+            "name": "deletePokemon",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "{{demo}}/pokemons/123",
+                    "path": [
+                        "pokemons",
+                        "123"
+                    ],
+                    "host": [
+                        "{{demo}}"
+                    ]
+                }
+            }
+        }
+    ]
+}
