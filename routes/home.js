@@ -107,7 +107,7 @@ router.get("/:pokemonId", async function (req, res, next) {
       (pokemon) => pokemon.id === previousPokemonId
     ),
   };
-  res.send({ data: result });
+  return res.send({ data: result });
 });
 
 router.post("/", function (req, res, next) {
@@ -119,18 +119,18 @@ router.post("/", function (req, res, next) {
 
   ////"Missing required data
   if (!name || !id || !url || !types) {
-    res.status(401).send({ message: "Missing required value" });
+    return res.status(401).send({ message: "Missing required value" });
   }
   ///Pokémon can only have one or two types
   if (types[0]) {
     if (!pokemonTypes.includes(types[0])) {
-      res.status(401).send({ message: "Pokémon's type is invalid" });
+      return res.status(401).send({ message: "Pokémon's type is invalid" });
     }
   }
 
   if (types[1]) {
     if (!pokemonTypes.includes(types[1])) {
-      res.status(401).send({ message: "Pokémon's type is invalid" });
+      return res.status(401).send({ message: "Pokémon's type is invalid" });
     }
   }
 
@@ -140,12 +140,12 @@ router.post("/", function (req, res, next) {
     ) ||
     data.data.find((pokemon) => parseInt(pokemon.id) === parseInt(id))
   ) {
-    res.status(401).send({ message: "Pokémon is existing" });
+    return res.status(401).send({ message: "Pokémon is existing" });
   }
 
   data.data.push({
     id: parseInt(id),
-    name,
+    name: name.toLowerCase(),
     types: types.filter((type) => type !== null),
     url,
   });
@@ -157,8 +157,6 @@ router.post("/", function (req, res, next) {
       totalPokemons: data.data.length,
     })
   );
-
-  res.send({ message: "success" });
 });
 
 router.get("/", async function (req, res, next) {
@@ -187,7 +185,7 @@ router.get("/", async function (req, res, next) {
   //page
   result = result.slice(limit * (page - 1), limit * page);
 
-  res.send({
+  return res.send({
     data: result,
   });
 });
