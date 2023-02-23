@@ -43,7 +43,9 @@ const init = async () => {
         types: pokemon.Type2
           ? [pokemon.Type1.toLowerCase(), pokemon.Type2.toLowerCase()]
           : [pokemon.Type1.toLowerCase()],
-        url: `${process.env.HOST}/pokemon_images/${index + 1}.jpg`,
+        url: `https://raw.githubusercontent.com/lephuthuc2001/pokemon_be/main/public/pokemon_images/${
+          index + 1
+        }.jpg`,
       };
     }
   });
